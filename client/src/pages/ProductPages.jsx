@@ -74,10 +74,13 @@ export default function ProductPages() {
 	};
 
 	const input = async () => {
-		api.post("/product/v1", product).then((res) => {
-			console.log(res.data);
-			return alert(res.data);
-		});
+		try {
+			const result = await api.post("/product/v1", product);
+			alert(result.data.message);
+			fetchData(); // Memanggil fungsi fetchData untuk memperbarui data setelah berhasil melakukan input
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const [products, setProducts] = useState([]);
@@ -319,12 +322,14 @@ export default function ProductPages() {
 										>
 											Save
 										</Button>
-										<Button onClick={onClose}>Cancel</Button>
+										<Button onClick={onClose} colorScheme="yellow">
+											Cancel
+										</Button>
 									</ModalFooter>
 								</ModalContent>
 							</Modal>
-							<Stack>
-								<TableContainer p={4}>
+							<Stack w={"100%"} flexDir={"column"}>
+								<TableContainer flexDir={"column"}>
 									<Table variant="simple">
 										<Thead bgColor={"whatsapp.400"}>
 											<Tr>
