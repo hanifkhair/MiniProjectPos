@@ -10,7 +10,6 @@ import {
 	HStack,
 	Box,
 	Button,
-<<<<<<<<< Temporary merge branch 1
 	IconButton,
 	VStack,
 	Table,
@@ -21,10 +20,7 @@ import {
 	Th,
 	Td,
 	TableContainer,
-<<<<<<<<< Temporary merge branch 1
 	Container,
-=========
->>>>>>>>> Temporary merge branch 2
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -63,15 +59,9 @@ export default function ProductPages() {
 
 	const [product, setProduct] = useState({
 		productName: "",
-<<<<<<<<< Temporary merge branch 1
 		harga: 0,
 		stock: 0,
 		categoryId: 1,
-=========
-		harga: "",
-		stock: "",
-		categoryId: "",
->>>>>>>>> Temporary merge branch 2
 		photoProduct_url: "",
 		photoProduct_blob: "",
 	});
@@ -84,12 +74,6 @@ export default function ProductPages() {
 	};
 
 	const input = async () => {
-<<<<<<<<< Temporary merge branch 1
-		api.post("/product/v1", product).then((res) => {
-			console.log(res.data);
-			return alert(res.data);
-		});
-=========
 		try {
 			const result = await api.post("/product/v1", product);
 			alert(result.data.message);
@@ -97,14 +81,11 @@ export default function ProductPages() {
 		} catch (error) {
 			console.error(error);
 		}
->>>>>>>>> Temporary merge branch 2
 	};
 
 	const [products, setProducts] = useState([]);
 	const [keyword, setKeyword] = useState("");
 	const [query, setQuery] = useState("");
-	const [currentPage, setCurrentPage] = useState(1);
-	const [productsPerPage] = useState(5);
 
 	useEffect(() => {
 		api
@@ -118,7 +99,6 @@ export default function ProductPages() {
 	}, []);
 
 	useEffect(() => {
-<<<<<<<<< Temporary merge branch 1
 		fetchProduct();
 	}, [keyword]);
 
@@ -144,14 +124,17 @@ export default function ProductPages() {
 		setKeyword(query);
 	};
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const [productsPerPage] = useState(5);
+
 	// Menghitung indeks produk awal dan akhir pada halaman saat ini
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
 	const currentProducts = products.slice(
 		indexOfFirstProduct,
 		indexOfLastProduct
 	);
-
 	// Fungsi untuk mengubah halaman
 	const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -172,217 +155,6 @@ export default function ProductPages() {
 		const category = categories.find((y) => y.id === x);
 		return category ? category.categoryName : "";
 	};
-
-	//    const [selectedFile, setSelectedFile] = useState(null);
-	//  const fileInputRef = useRef(null);
-	//  const handleFileChange = (event) => {
-	//    setSelectedFile(event.target.files[0]);
-	//  };
-
-	//  async function handleUpload() {
-	//    try {
-	//      const formData = new FormData();
-	//      formData.append("avatar", selectedFile);
-
-	//      await api.post("/avatar/upload-avatar", formData, {
-	//        headers: {
-	//          "Content-Type": "multipart/form-data",
-	//        },
-	//      });
-
-	//      console.log("Photo product uploaded successfully");
-	//    } catch (error) {
-	//      console.error("Error uploading photo product:", error);
-	//    }
-	//  }
-
-	return (
-		<>
-			<Flex className="container">
-				<Flex className="device" bg={"whitesmoke"}>
-					<Flex className="sidebar">
-						<SideBar />
-					</Flex>
-					<Flex w={"80%"} h={"100%"} flexDir={"column"}>
-						<Flex className="topbar">
-							<TopBar />
-						</Flex>
-						<Flex className="adminCategory" w="100%" flexDir={"column"}>
-							<Stack px={"4"}>
-								<Text fontSize={"24px"} fontWeight={"bold"} color={"black"}>
-									Product
-								</Text>
-								<form onSubmit={searchData}>
-									<HStack>
-										<InputGroup>
-											<InputLeftElement pointerEvents="none">
-												<SlMagnifier />
-											</InputLeftElement>
-											<Input
-												type="text"
-												placeholder="Search Product"
-												value={query}
-												onChange={(e) => setQuery(e.target.value)}
-												minW={"30vw"}
-												borderColor={"blackAlpha.300"}
-											/>
-										</InputGroup>
-										<Box
-											w="100%"
-											justifyContent={"start"}
-											gap="10px"
-											display={"flex"}
-											p={4}
-											m={8}
-										>
-											<Button
-												type="submit"
-												h={"26px"}
-												w={"100px"}
-												colorScheme="teal"
-											>
-												<SlMagnifier />
-												Search
-											</Button>
-										</Box>
-										<Box
-											w="100%"
-											justifyContent={"flex-end"}
-											gap="10px"
-											display={"flex"}
-											p={4}
-											m={8}
-										>
-											<Button
-												onClick={onOpen}
-												h={"26px"}
-												w={"80px"}
-												colorScheme={"facebook"}
-											>
-												<HiPlus />
-												Product
-											</Button>
-										</Box>
-									</HStack>
-								</form>
-							</Stack>
-							<Modal
-								initialFocusRef={initialRef}
-								finalFocusRef={finalRef}
-								isOpen={isOpen}
-								onClose={onClose}
-							>
-								<ModalOverlay />
-								<ModalContent>
-									<ModalHeader>Add Product</ModalHeader>
-									<ModalCloseButton />
-									<ModalBody pb={6}>
-										<FormControl>
-											<FormLabel>Product name</FormLabel>
-											<Input
-												ref={initialRef}
-												placeholder="Product name"
-												id="productName"
-												onChange={inputHandler}
-											/>
-										</FormControl>
-										<FormControl>
-											<FormLabel>Product Image</FormLabel>
-											<Input
-												ref={initialRef}
-												placeholder="Product image"
-												id="photoProduct_url"
-												onChange={inputHandler}
-											/>
-										</FormControl>
-										<FormControl mt={4}>
-											<FormLabel>Category</FormLabel>
-											<Select
-												value={selectedOption}
-												id="categoryId"
-												onClick={inputHandler}
-												defaultValue={"1"}
-											>
-												{categories.map((category) => (
-													<option key={category.id} value={`${category.id}`}>
-														{category.categoryName}
-													</option>
-												))}
-											</Select>
-										</FormControl>
-										<FormControl mt={4}>
-											<FormLabel>Price</FormLabel>
-											<Input
-												placeholder="Price"
-												id="harga"
-												onChange={inputHandler}
-											/>
-										</FormControl>
-										<FormControl mt={4}>
-											<FormLabel>Stock</FormLabel>
-											<Input
-												placeholder="Stock"
-												id="stock"
-												onChange={inputHandler}
-											/>
-										</FormControl>
-									</ModalBody>
-
-=========
-		api
-			.get(`/product/v4?search_query=${keyword}`)
-			.then((response) => {
-				setProducts(response.data);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, [keyword]);
-
-	const searchData = (e) => {
-		e.preventDefault();
-		setKeyword(query);
-	};
-
-	// Menghitung indeks produk awal dan akhir pada halaman saat ini
-	const indexOfLastProduct = currentPage * productsPerPage;
-	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-	const currentProducts = products.slice(
-		indexOfFirstProduct,
-		indexOfLastProduct
-	);
-
-	// Fungsi untuk mengubah halaman
-	const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-	const [categories, setCategories] = useState([]);
-
-	useEffect(() => {
-		api
-			.get("/category/")
-			.then((response) => {
-				setCategories(response.data);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
-
-	const getCategoryName = (x) => {
-		const category = categories.find((y) => y.id === x);
-		return category ? category.categoryName : "";
-	};
-
-	//    const [selectedFile, setSelectedFile] = useState(null);
-	//  const fileInputRef = useRef(null);
-	//  const handleFileChange = (event) => {
-	//    setSelectedFile(event.target.files[0]);
-	//  };
-
-	//  async function handleUpload() {
-	//    try {
-	//      const formData = new FormData();
-	//      formData.append("avatar", selectedFile);
 
 	const fetchData = async () => {
 		try {
@@ -537,41 +309,32 @@ export default function ProductPages() {
 										</FormControl>
 									</ModalBody>
 
->>>>>>>>> Temporary merge branch 2
 									<ModalFooter>
 										<Button
 											colorScheme="blue"
 											mr={3}
 											onClick={() => {
 												input();
-												// handleUpload();
 												onClose();
+												fetchData();
 											}}
 										>
 											Save
 										</Button>
-<<<<<<<<< Temporary merge branch 1
-										<Button onClick={onClose}>Cancel</Button>
-									</ModalFooter>
-								</ModalContent>
-							</Modal>
-							<Stack>
-								<TableContainer p={4}>
-=========
+
 										<Button onClick={onClose} colorScheme="yellow">
 											Cancel
 										</Button>
 									</ModalFooter>
 								</ModalContent>
 							</Modal>
-							<Flex w={"100%"} flexDir={"column"}>
-								<TableContainer flexDir={"column"}>
->>>>>>>>> Temporary merge branch 2
+							<Stack>
+								<TableContainer p={4} justifyContent={"space-between"}>
 									<Table variant="simple">
 										<Thead bgColor={"whatsapp.400"}>
 											<Tr>
 												<Th>No</Th>
-<<<<<<<<< Temporary merge branch 1
+
 												<Th>
 													Product Name{" "}
 													<IconButton
@@ -636,32 +399,16 @@ export default function ProductPages() {
 													/>
 												</Th>
 												<Th>Stok</Th>
-												<Th>Action</Th>
-											</Tr>
-										</Thead>
-										<Tbody>
-											{currentProducts.map((product) => (
-												<Tr key={product.id}>
-													<Td>{product.id}</Td>
-=========
-												<Th>Product Name</Th>
-												<Th>Category</Th>
-												<Th>Price</Th>
-												<Th>Stok</Th>
-												<Th
-													display={"flex"}
-													justifyContent={"center"}
-													flexDir={"flex-end"}
-												>
-													Action
-												</Th>
+												<Th isNumeric>Action</Th>
 											</Tr>
 										</Thead>
 										<Tbody>
 											{currentProducts.map((product, idx) => (
 												<Tr key={product.id}>
-													<Td>{indexOfFirstProduct + idx + 1}</Td>
->>>>>>>>> Temporary merge branch 2
+													<Td>
+														{indexOfLastProduct - productsPerPage + idx + 1}
+													</Td>
+
 													<Td>{product.productName}</Td>
 													<Td>{getCategoryName(product.categoryId)}</Td>
 													<Td>{`Rp.${product.harga}`}</Td>
@@ -676,11 +423,7 @@ export default function ProductPages() {
 															>
 																<Button
 																	colorScheme={"yellow"}
-<<<<<<<<< Temporary merge branch 1
 																	w={"50%"}
-=========
-																	size={"md"}
->>>>>>>>> Temporary merge branch 2
 																	onClick={() => {
 																		setEditProductId(product.id);
 																		modalEdit.onOpen();
@@ -690,23 +433,15 @@ export default function ProductPages() {
 																	<EditProduct
 																		id={editProductId}
 																		isOpen={modalEdit.isOpen}
-<<<<<<<<< Temporary merge branch 1
-																		onClose={modalEdit.onClose}
-=========
 																		onClose={() => {
 																			modalEdit.onClose();
 																			fetchData();
 																		}}
->>>>>>>>> Temporary merge branch 2
 																	/>
 																</Button>
 																<Button
 																	colorScheme="red"
-<<<<<<<<< Temporary merge branch 1
 																	w={"50%"}
-=========
-																	size={"md"}
->>>>>>>>> Temporary merge branch 2
 																	onClick={() => {
 																		setDeleteProductId(product.id);
 																		modalDelete.onOpen();
@@ -716,14 +451,10 @@ export default function ProductPages() {
 																	<DeleteProduct
 																		id={deleteProductId}
 																		isOpen={modalDelete.isOpen}
-<<<<<<<<< Temporary merge branch 1
-																		onClose={modalDelete.onClose}
-=========
 																		onClose={() => {
 																			modalDelete.onClose();
 																			fetchData();
 																		}}
->>>>>>>>> Temporary merge branch 2
 																	/>
 																</Button>
 															</HStack>
@@ -753,11 +484,7 @@ export default function ProductPages() {
 										))}
 									</Flex>
 								</TableContainer>
-<<<<<<<<< Temporary merge branch 1
 							</Stack>
-=========
-							</Flex>
->>>>>>>>> Temporary merge branch 2
 						</Flex>
 					</Flex>
 				</Flex>
