@@ -45,6 +45,8 @@ import { api } from "../api/api";
 import { DeleteProduct } from "../components/DeleteProduct";
 import { EditProduct } from "../components/EditProduct";
 import { useDispatch, useSelector } from "react-redux";
+import SideBarAdmin from "../components/SideBarAdmin";
+import TopBarAdmin from "../components/TopBarAdmin";
 
 export default function ProductPages() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -490,5 +492,75 @@ export default function ProductPages() {
 				</Flex>
 			</Flex>
 		</>
+	);
+}
+
+function RowProduct({
+	product,
+	idx,
+	getCategoryName,
+	fetchData,
+	indexOfLastProduct,
+	productsPerPage,
+}) {
+	const [deleteProductId, setDeleteProductId] = useState(null);
+	const [editProductId, setEditProductId] = useState(null);
+
+	const modalDelete = useDisclosure();
+	const modalEdit = useDisclosure();
+	return (
+		<Tr key={product.id}>
+			<Td>{indexOfLastProduct - productsPerPage + idx + 1}</Td>
+
+			<Td>{product.productName}</Td>
+			<Td>{getCategoryName(product.categoryId)}</Td>
+			<Td>{`Rp.${product.harga}`}</Td>
+			<Td>{product.stock}</Td>
+
+			<Td>
+				<Stack>
+					<HStack display={"flex"} align={"center"} justifyContent={"center"}>
+						<Button
+							colorScheme={"yellow"}
+							w={"50%"}
+							onClick={() => {
+								setEditProductId(product.id);
+								modalEdit.onOpen();
+							}}
+						>
+							{<FiEdit cursor={"pointer"} />}
+							<EditProduct
+								id={editProductId}
+								product={product}
+								isOpen={modalEdit.isOpen}
+								onClose={() => {
+									modalEdit.onClose();
+									fetchData();
+								}}
+							/>
+						</Button>
+						<Button
+							colorScheme="red"
+							w={"50%"}
+							onClick={() => {
+								setDeleteProductId(product.id);
+								modalDelete.onOpen();
+							}}
+						>
+							{<RiDeleteBin6Line cursor={"pointer"} />}
+							<DeleteProduct
+								id={deleteProductId}
+								product={product}
+								isOpen={modalDelete.isOpen}
+								onClose={() => {
+									modalDelete.onClose();
+									fetchData();
+								}}
+							/>
+						</Button>
+					</HStack>
+				</Stack>
+			</Td>
+		</Tr>
 	);
 }
