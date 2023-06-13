@@ -28,6 +28,7 @@ import {
   useDisclosure,
   Select,
   Avatar,
+  useToast,
 } from "@chakra-ui/react";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -53,6 +54,7 @@ export default function AdminPages() {
   const { selectedOption, setSelectedOption } = useState("");
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const toast = useToast();
 
   const [user, setUser] = useState({
     firstName: "",
@@ -78,7 +80,14 @@ export default function AdminPages() {
 
   const register = async () => {
     const result = await api.post("/auth/", user);
-    return alert(result.data.message);
+    toast({
+      title: "Cashier has been added",
+      status: "success",
+      duration: 3000,
+      position: "top",
+      isClosable: false,
+    });
+    fetchData();
   };
 
   const [users, setUsers] = useState([]);
@@ -141,7 +150,14 @@ export default function AdminPages() {
       formData.append("avatar", file);
       let user;
       await api.post("/auth/image/v2/" + id, formData).then((res) => {
-        alert(res.data);
+        // alert(res.data);
+        toast({
+          title: "Image has been added",
+          status: "success",
+          duration: 3000,
+          position: "top",
+          isClosable: false,
+        });
       });
       console.log(user);
       if (user) {
@@ -149,7 +165,13 @@ export default function AdminPages() {
           type: "login",
           payload: user,
         });
-        alert(`berhasil upload`);
+        toast({
+          title: "Image has been added",
+          status: "success",
+          duration: 3000,
+          position: "top",
+          isClosable: false,
+        });
       }
       setSelectedFile(null);
 
@@ -221,7 +243,7 @@ export default function AdminPages() {
                         onClick={onOpen}
                         h={"26px"}
                         w={"80px"}
-                        colorScheme={"red"}
+                        colorScheme={"facebook"}
                       >
                         <HiPlus />
                         Cashier
@@ -333,8 +355,10 @@ export default function AdminPages() {
               </Modal>
               <Stack>
                 <TableContainer p={4} justifyContent={"space-between"}>
+
                   <Table variant="simple">
-                    <Thead>
+                    <Thead bgColor={"#c3c1e8"} w={"100%"}>
+
                       <Tr>
                         <Th>No</Th>
                         <Th>Photo</Th>
@@ -343,6 +367,7 @@ export default function AdminPages() {
                         <Th>Email</Th>
                         <Th>Phone</Th>
                         <Th>Action</Th>
+                        <Th>Edit/Delete</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
